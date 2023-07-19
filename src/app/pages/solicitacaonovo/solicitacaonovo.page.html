@@ -1,0 +1,246 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/relsolicitacao"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Solicitacao de Ouvidoria</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true" padding>
+  <form class="list" name="solicitcao" #fcontrato="ngForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="key-outline"></ion-icon> ID
+            </ion-label>
+            <ion-input name="idcontrato" type="text" [(ngModel)]="solicitacao.idsolicitacao" readonly="true">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" size-lg="4" size-xs="4">
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="bag-outline"></ion-icon> Sigilo
+            </ion-label>
+            <ion-select justify="start" name="sigilo" interface="action-sheet" placeholder="Selecione o tipo de Sigilo"
+              cancelText="Cancelar" (ionChange)="verificaSigilo($event)" [(ngModel)]="sigilo"
+              [disabled]="!registro.contratost" required>
+              <ion-select-option value='0'>Normal</ion-select-option>
+              <ion-select-option value='1'>Sigiloso</ion-select-option>
+              <ion-select-option value='2'>Anonimo</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="2" size-lg="2" size-xs="2">
+          <ion-list>
+            <span title="Informações sobre Sigilo">
+              <ion-button id="click-trigger" fill="clear" size="small">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+              </ion-button>
+            </span>
+            <ion-popover trigger="click-trigger" triggerAction="click">
+              <ng-template>
+                <ion-content class="ion-padding">
+                  <p><b><u> Abaixo os tipos de Sigilos disponiveis</u></b></p>
+                  <p><u>Normal</u> seus dados vão ser compartilhados com a area responsavel.</p>
+                  <p><u>Sigiloso</u> seus dados serão acessados somente pela Ouvidoria.</p>
+                  <p><u>Anonimo</u> seus dados não serão informados.</p>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="mail-outline"></ion-icon> Email do Solicitante
+              </ion-label>
+              <ion-input name="email" type="email" [(ngModel)]="solicitacao.email" [required]="anonymous"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="body-outline"></ion-icon> Nome Solicitante
+              </ion-label>
+              <ion-input name="nome" type="text" [(ngModel)]="solicitacao.nome" [required]="anonymous"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="call-outline"></ion-icon> Telefone Solicitante
+              </ion-label>
+              <ion-input name="telefone" [(ngModel)]="solicitacao.telefone" type="tel" placeholder="(99)99999-9999"
+                [required]="anonymous"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="bookmarks-outline"></ion-icon> Tipo de Solicitação
+              </ion-label>
+              <ion-select justify="start" name="idtpsolicitacao" cancelText="Cancelar"
+                [(ngModel)]="solicitacao.idtpsolicitacao" placeholder="Selecione o tipo de solicitação"
+                interface="action-sheet" [disabled]="!registro.ccontratos" required>
+                <ion-select-option *ngFor="let tpsolicitacao of tpsolicitacaos" [value]="tpsolicitacao.idtpsolicitacao">
+                  {{tpsolicitacao.descricao}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="book-outline"></ion-icon> Descrição da Solcitação
+              </ion-label>
+              <ion-textarea clearOnEdit [(ngModel)]="solicitacao.descricao" label="Descreva sua solicitação"
+                name="descricao" type="text" helperText="Informar o motivo da Solicitação"
+                errorText="Motivo da solicitação Invalido" minlength="10" maxlength=3000 rows="6" required>
+              </ion-textarea>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="book-outline"></ion-icon> Resposta da Solcitação
+              </ion-label>
+              <ion-textarea clearOnEdit [(ngModel)]="solicitacao.resposta" label="Descreva sua solicitação"
+                name="resposta" type="text" helperText="Informar o resposta da Solicitação"
+                errorText="Resposta da solicitação Invalido" minlength="10" maxlength=3000 rows="6">
+              </ion-textarea>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-grid *ngIf="solicitacao.iduserupdatedAt">
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="calendar-outline"></ion-icon> Data Ultima Alteração
+              </ion-label>
+              <ion-input name="updatedAt" type="text" [(ngModel)]="updatedAt" maxlength=10 readonly>
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="person-outline"></ion-icon> Usuario Responsavel pela Alteração
+              </ion-label>
+              <ion-input name="iduserupdatedAt" type="text" [(ngModel)]="iduserupdatedAt" maxlength=90 readonly>
+              </ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="file-tray-stacked-outline"></ion-icon> Arquivos Importandos
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-list style="width: 100%; max-height: 200px; overflow-y: scroll;">
+                <ion-item *ngFor="let documentosol of documentosols"
+                  (click)="selecionadocumentosol(documentosol.documentopdf)" button>
+                  <ion-label>{{documentosol.nome}} - {{documentosol.size}}</ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <div *ngIf="registro.contratost">
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+            <ion-button type="submit" size="default" shape="round" (click)="gravar()" expand="block"
+              [disabled]="fcontrato.invalid">
+              <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+              Gravar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+            <ion-button type="submit" size="default" shape="round" (click)="finalizar()" expand="block"
+              [disabled]="fcontrato.invalid || solicitacao.statussolicitacao == 'F'">
+              <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+              Finalizar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+            <ion-button type="submit" size="default" shape="round" (click)="voltar()" expand="block">
+              <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+              Cancelar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="solicitacao.statussolicitacao != 'F'">
+        <ion-row class=" ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="12" size-lg="12" size-xs="12">
+
+            <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="inputFileChange($event)"
+              (onClear)="voltar()" accept="application/pdf" chooseLabel="Escolher Arquivo" [multiple]="true"
+              uploadLabel="Carregar arquivo" cancelLabel="Cancelar">
+            </p-fileUpload>
+
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </form>
+
+  <div *ngIf="pdfSrc != ''">
+    <ion-button type="submit" size="small" shape="round" (click)="subtractZoom()">
+      <ion-icon name="remove-outline"></ion-icon>
+    </ion-button>
+    <ion-button type="submit" size="small" shape="round" (click)="addZoom()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+    <ion-button type="submit" size="small" shape="round" (click)="rotateDoc()">
+      <ion-icon name="sync-outline"></ion-icon>
+    </ion-button>
+
+    <pdf-viewer [src]="pdfSrc" [render-text]="true" [autoresize]="true" [original-size]="false" [fit-to-page]="false"
+      [rotation]="rotation" style="width: 1200px ; height: 1500px" [zoom]="zoom"></pdf-viewer>
+  </div>
+
+</ion-content>

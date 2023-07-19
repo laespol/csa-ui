@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <img src="assets/imgs/logo.bmp" alt="Italian Trulli">
+    <ion-label color="primary" style="font-size: 25px;font-weight:bold;" slot="end">Intranet</ion-label>
+
+  </ion-toolbar>
+
+</ion-header>
+<ion-content [fullscreen]="true" padding class="loginPage">
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="8" size-lg="4" size-xs="8">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="mail-outline"></ion-icon> Usuário
+              </ion-label>
+              <ion-input formControlName="email" inputmode="email" type="text"  ></ion-input>
+            </ion-item>
+            <div *ngFor="let error of errorMessages.email">
+              <ng-container *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
+                <small class="error-message">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="8" size-lg="4" size-xs="8">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="key-outline"></ion-icon> Senha 
+              </ion-label>
+              <ion-icon slot="end" [name]="passwordToggleIcon" (click)="togglePassord()"></ion-icon>
+              <ion-input clearOnEdit formControlName="senha" [type]="showPassword ? 'text' : 'password'"></ion-input>
+            </ion-item>
+            <div *ngFor="let error of errorMessages.senha">
+              <ng-container *ngIf="senha.hasError(error.type) && (senha.dirty || senha.touched)">
+                <small class="error-message">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="8" size-lg="4" size-xs="8">
+          <ion-button type="submit" size="default" shape="round" [disabled]="!loginForm.valid" expand="block">
+            Login <br>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>
+<ion-footer >
+  <ion-toolbar color="primary">
+    <ion-title>© 2020-2024 Colégio Santo Americo </ion-title>
+    <ion-label color="light" style="font-size: 1em;" slot="end">v0.00.11</ion-label>
+  </ion-toolbar>
+</ion-footer>

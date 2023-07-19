@@ -1,0 +1,47 @@
+<ion-content>
+  <form class="list" name="area" #fcusto="ngForm">
+    <ion-grid>
+      <ion-list>
+        <ion-item>
+          <ion-label> Id : </ion-label>
+          <ion-input name="idcusto" type="text" [(ngModel)]="custo.idcusto" readonly></ion-input>
+          <div *ngIf="custo.idcusto != 0">
+            <ion-button type="submit" size="default" shape="round" (click)="apagar()">
+              <ion-icon name="trash-outline" color="#f3f3bc"></ion-icon>
+              Apagar
+            </ion-button>
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Coligada</ion-label>
+          <ion-select justify="start" name="idimovel" cancelText="Cancelar" [(ngModel)]="custo.idimovel"
+             placeholder="Selecione Coligada" interface="popover" >
+            <ion-select-option *ngFor="let imovel of imovels" [value]="imovel.idimovel">{{imovel.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input autocapitalize name="nome" type="text" [(ngModel)]="custo.nome" required></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-button type="submit" size="default" shape="round" (click)="gravar()" expand="block"
+            [disabled]="fcusto.invalid">
+            <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+            Gravar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-button type="cancel" size="default" shape="round" (click)="voltar()" expand="block">
+            <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+            Cancelar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

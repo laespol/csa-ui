@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Unidade</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button type="submit" size="default" shape="round" expand="block" (click)="novo()">
+    <ion-icon name="person-add-outline" color="#f3f3bc"></ion-icon> Novo Unidade
+  </ion-button>
+  <div class="card">
+    <p-table  #dt1 [value]="unidades" 
+    dataKey="idunidade"
+    selectionMode="single" 
+    scrollDirection="both" 
+    [scrollable]="true"
+    [resizableColumns]="true"
+    [paginator]="true" 
+    [rows]="5" 
+    [showCurrentPageReport]="true" 
+    styleClass="p-datatable-sm"
+    [(selection)]="selectedUnidade" 
+    (onRowSelect)="onRowSelect($event)" 
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+      [rowsPerPageOptions]="[5,10,20,50]"      
+      [globalFilterFields]="['nome']">
+      <ng-template pTemplate="caption">
+        <ion-list>
+          <ion-item>
+          <ion-button slot="start" type="submit" size="smal" shape="round" (click)="exportExcel()" pTooltip="XLS"
+            tooltipPosition="bottom">
+            <ion-icon name="document-text-sharp" color="#f3f3bc"></ion-icon>
+            Excel
+          </ion-button>
+          <ion-input #buscaDescricao name="container" type="text" (input)="dt1.filterGlobal(buscaDescricao.value, 'contains')" placeholder="Pesquisar"></ion-input>
+          <ion-button slot="end" type="submit" size="smal" shape="round" (click)="clear(dt1)" pTooltip="XLS"
+            tooltipPosition="bottom">
+            <ion-icon name="refresh-outline" color="#f3f3bc"></ion-icon>
+            Limpar
+          </ion-button>
+        </ion-item>
+        </ion-list>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:80px" pFrozenColumn pSortableColumn="idunidade">ID<p-sortIcon field="idunidade"></p-sortIcon>
+          </th>
+          <th style="width:300px"  pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon>
+          </th>
+          <th style="width:300px"  pSortableColumn="nome">Coligada<p-sortIcon field="coligada"></p-sortIcon>
+          </th>
+          <th style="width:300px"  pSortableColumn="nome">Centro de Custo<p-sortIcon field="coligada"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-unidades>
+        <tr [pSelectableRow]="unidades">
+          <td style="width:80px" pFrozenColumn >{{unidades.idunidade}}</td>
+          <td style="width:300px" >{{unidades.nome}}</td>
+          <td style="width:300px" >{{unidades.imovel.nome}}</td>
+          <td style="width:300px" >{{unidades.centrocusto}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</ion-content>

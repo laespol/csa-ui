@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="card">
+    <p-table #dt1 [value]="usuarios" dataKey="idusuario" selectionMode="single" scrollDirection="both"
+      [scrollable]="true" [resizableColumns]="true" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+      styleClass="p-datatable-sm" [(selection)]="selectedUsuario"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [rowsPerPageOptions]="[5,15,50]"
+      [globalFilterFields]="['nome', 'ramaln' , 'celular','departamento.nome']">
+      <ng-template pTemplate="caption">
+        <ion-list>
+          <ion-item>
+            <ion-button slot="start" type="submit" size="smal" shape="round" (click)="exportExcel()" pTooltip="XLS"
+              tooltipPosition="bottom">
+              <ion-icon name="document-text-sharp" color="#f3f3bc"></ion-icon>
+              Excel
+            </ion-button>
+            <ion-input #buscaDescricao name="container" type="text"
+              (input)="dt1.filterGlobal(buscaDescricao.value, 'contains')" placeholder="Pesquisar"></ion-input>
+            <ion-button slot="end" type="submit" size="smal" shape="round" (click)="clear(dt1)" pTooltip="XLS"
+              tooltipPosition="bottom">
+              <ion-icon name="refresh-outline" color="#f3f3bc"></ion-icon>
+              Limpar
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:350px" pFrozenColumn pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon>
+          </th>
+          <th style="width:350px" pSortableColumn="email">E-mail<p-sortIcon field="email">
+            </p-sortIcon>
+          </th>
+          <th style="width:250px" pSortableColumn="nivel">Nivel<p-sortIcon field="nivel">
+            </p-sortIcon>
+          </th>
+          <th style="width:300px" pSortableColumn="unidade">Departamento<p-sortIcon field="unidade">
+            </p-sortIcon>
+          </th>
+          <th style="width:150px" pSortableColumn="ramaln">Ramal<p-sortIcon field="ramaln">
+            </p-sortIcon>
+          <th style="width:150px" pSortableColumn="celular">Celular<p-sortIcon field="celular">
+            </p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-usuarios>
+        <tr [pSelectableRow]="usuarios">
+          <td style="width:350px" pFrozenColumn>{{usuarios.nome}}</td>
+          <td style="width:350px">{{usuarios.email}}</td>
+          <td style="width:250px">{{usuarios.nivel.nome}}</td>
+          <td style="width:300px">{{usuarios.unidade.nome}}</td>
+          <td style="width:150px">{{usuarios.ramaln}}</td>
+          <td style="width:150px">{{usuarios.celular}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</ion-content>

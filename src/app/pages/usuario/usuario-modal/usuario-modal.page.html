@@ -1,0 +1,103 @@
+<ion-content>
+  <form  class="list" name="usuario"  #fusuario="ngForm">
+    <ion-grid>
+      <ion-list>
+        <ion-item>
+          <ion-label> Id : </ion-label>
+          <ion-input  name="idusuario" type="text" [(ngModel)]="usuario.idusuario" readonly></ion-input>
+          <div *ngIf="usuario.idusuario != 0">
+            <ion-button type="submit" size="default" shape="round" (click)="apagar()">
+              <ion-icon name="trash-outline" color="#f3f3bc"></ion-icon>
+              Apagar
+            </ion-button>
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">CPF</ion-label>
+          <ion-input autocapitalize name="cpf" type="text" [(ngModel)]="usuario.cpf" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input autocapitalize name="nome" type="text" [(ngModel)]="usuario.nome" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">E-mail</ion-label>
+          <ion-input autocapitalize name="email" type="text" [(ngModel)]="usuario.email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Nivel</ion-label>
+          <ion-select name="nivel" cancelText="Cancelar" [(ngModel)]="usuario.idnivel" placeholder="Selecione Nivel Operacional" interface="popover">
+            <ion-select-option *ngFor="let nivel of nivels" [value]="nivel.idnivel">{{nivel.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Departamento</ion-label>
+          <ion-select name="departamento" cancelText="Cancelar" [(ngModel)]="usuario.idunidade" placeholder="Selecione Nivel Operacional" interface="popover">
+            <ion-select-option *ngFor="let unidade of unidades" [value]="unidade.idunidade">{{unidade.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label   position="stacked">Troca Senha</ion-label>
+          <ion-toggle name="trocasenha"  checked="false" [(ngModel)]="usuario.trocasenha" required></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Menu</ion-label>
+          <ion-select name="menu" cancelText="Cancelar" [(ngModel)]="usuario.idmenu" placeholder="Selecione Menu" interface="popover">
+            <ion-select-option *ngFor="let menu of menus" [value]="menu.idmenu">{{menu.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label  position="stacked">Ramal</ion-label>
+          <ion-input name="ramaln" autocapitalize name="ramaln" type="text" [(ngModel)]="usuario.ramaln"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label  position="stacked">Celular</ion-label>
+          <ion-input  name="celular" autocapitalize name="celular" type="text" [(ngModel)]="usuario.celular" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label  position="stacked">Telegram</ion-label>
+          <ion-input  name="celular" autocapitalize name="telegram" type="text" [(ngModel)]="usuario.chatid" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label   position="stacked">Total</ion-label>
+          <ion-toggle name="ti"  checked="false" [(ngModel)]="usuario.ti" required></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label   position="stacked">Ver todos os contratos</ion-label>
+          <ion-toggle name="vtodoscontratos"  checked="false" [(ngModel)]="usuario.vtodoscontratos" required></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label   position="stacked">Ver todas as horas Extras</ion-label>
+          <ion-toggle name="vtodoshoraextra"  checked="false" [(ngModel)]="usuario.vtodoshoraextra" required></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label   position="stacked">Cadastro de Contratos</ion-label>
+          <ion-toggle name="ccontratos"  checked="false" [(ngModel)]="usuario.ccontratos" required></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label   position="stacked">Cadastro de Horas Extras</ion-label>
+          <ion-toggle name="choraextra"  checked="false" [(ngModel)]="usuario.choraextra" required></ion-toggle>
+        </ion-item>
+      </ion-list>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12"  >
+          <ion-button type="submit" size="default" shape="round"  (click)="gravar()" expand="block" [disabled]="fusuario.invalid">
+            <ion-icon name="save-outline" color="#f3f3bc" ></ion-icon>
+            Gravar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-button type="cancel" size="default" shape="round" (click)="voltar()" expand="block">
+            <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+            Cancelar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

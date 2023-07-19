@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/requisicao"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Requisicao</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form class="list" name="requisicao" #frequisicao="ngForm">
+    <ion-grid>
+      <ion-list>
+
+        <ion-item>
+          <ion-label position="stacked">ID</ion-label>
+          <ion-input name="idrequisicao" type="text" [(ngModel)]="requisicao.idrequisicao" readonly="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Coligada</ion-label>
+          <ion-select justify="start" name="idimovel" cancelText="Cancelar" [(ngModel)]="requisicao.custo.idimovel"
+            [disabled]="!registro.contratost" placeholder="Selecione Coligada" interface="action-sheet"
+            (ionChange)="consultaCusto(requisicao.custo.idimovel)">
+            <ion-select-option *ngFor="let imovel of imovels" [value]="imovel.idimovel">{{imovel.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Localização / Area</ion-label>
+          <ion-select justify="start" name="custo" cancelText="Cancelar" [(ngModel)]="requisicao.idcusto"
+            [disabled]="!registro.contratost" placeholder="Selecione area" interface="action-sheet">
+            <ion-select-option *ngFor="let custo of custos" [value]="custo.idcusto">{{custo.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Descrição do Requisicao</ion-label>
+          <ion-input name="descricao" type="text" [(ngModel)]="requisicao.descricao" maxlength=600
+            [readonly]="!registro.contratost" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Justificativa</ion-label>
+          <ion-input name="justificativa" type="text" [(ngModel)]="requisicao.justificativa" maxlength=600
+            [readonly]="!registro.contratost" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Vigencia</ion-label>
+          <ion-input name="vigencia" type="text" [(ngModel)]="requisicao.vigencia" maxlength=200
+            [readonly]="!registro.contratost" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Outros Destaques</ion-label>
+          <ion-input name="outros" type="text" [(ngModel)]="requisicao.outros" maxlength=200
+            [readonly]="!registro.contratost" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Prazo para Assinatura do Instrumento</ion-label>
+          <ion-input name="prazo" type="text" [(ngModel)]="requisicao.prazo" maxlength=200
+            [readonly]="!registro.contratost" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Indice de Correção</ion-label>
+          <ion-select justify="start" name="correcao" interface="popover" placeholder="Selecione o indice de correção"
+            [(ngModel)]="requisicao.correcao" [disabled]="!registro.contratost" required>
+            <ion-select-option value="IGPM">IGPM</ion-select-option>
+            <ion-select-option value="IPCA">IPCA</ion-select-option>
+            <ion-select-option value="IPCA+">IPCA+</ion-select-option>
+            <ion-select-option value="INPC/IBGE">INPC/IBGE</ion-select-option>
+            <ion-select-option value="Sindicato">Sindicato</ion-select-option>
+            <ion-select-option value="IGP-DI">IGP-DI</ion-select-option>
+            <ion-select-option value="IPC-FIPE">IPC-FIPE</ion-select-option>
+            <ion-select-option value="Não Def">Não Def</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+
+        <ion-grid>
+
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Valor do Requisicao</ion-label>
+                <input currencyMask name="valorproposta" [(ngModel)]="requisicao.valorproposta"
+                  [options]="{ prefix: 'R$ ', thousands: '.' , decimal: ',' , precision: 2 }"
+                  [readonly]="!registro.contratost" />
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Tipo de Pagamento</ion-label>
+                <ion-select justify="start" name="tipopagamento" interface="popover"
+                  placeholder="Selecione tipo de pagamento" [(ngModel)]="requisicao.tipopagamento"
+                  [disabled]="!registro.contratost" required>
+                  <ion-select-option value="Mensal">Mensal</ion-select-option>
+                  <ion-select-option value="Unico">Unico</ion-select-option>
+                  <ion-select-option value="Anual">Anual</ion-select-option>
+                  <ion-select-option value="Parcelado">Parcelado</ion-select-option>
+                  <ion-select-option value="Não Def">Não Def</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Numero de Parcelas</ion-label>
+                <input currencyMask name="numeroparcelas" [(ngModel)]="requisicao.numeroparcelas"
+                  [options]="{ prefix: '', thousands: '.' , decimal: ',' , precision: 0 }"
+                  [readonly]="!registro.contratost" />
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-item>
+          <ion-label position="stacked">Area Responsável</ion-label>
+          <ion-select justify="start" name="unidade" cancelText="Cancelar" [(ngModel)]="requisicao.idunidade"
+            placeholder="Selecione Área Responsavel" interface="popover" [disabled]="!registro.contratost" required>
+            <ion-select-option *ngFor="let unidade of unidades" [value]="unidade.idunidade">{{unidade.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Aditivo</ion-label>
+          <ion-toggle name="aditivo" checked="false" [(ngModel)]="requisicao.aditivo" [disabled]="!registro.contratost">
+          </ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Renovação Automatica</ion-label>
+          <ion-toggle name="renovauto" checked="false" [(ngModel)]="requisicao.renovauto"
+            [disabled]="!registro.contratost">
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+        <ion-grid *ngIf="requisicao.iduserupdatedAt">
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Data Ultima Alteração</ion-label>
+                <ion-input name="updatedAt" type="text" [(ngModel)]="updatedAt" maxlength=10 readonly>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Usuario Responsavel pela Alteração</ion-label>
+                <ion-input name="iduserupdatedAt" type="text" [(ngModel)]="iduserupdatedAt" maxlength=90 readonly>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+          <div *ngIf="registro.contratost">
+            <ion-row class="ion-justify-content-center">
+              <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+                <ion-button type="submit" size="default" shape="round" (click)="gravar()" expand="block">
+                  <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+                  Gravar
+                </ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+              <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+                <ion-button type="submit" size="default" shape="round" (click)="voltar()" expand="block">
+                  <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+                  Cancelar
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-grid>
+  </form>

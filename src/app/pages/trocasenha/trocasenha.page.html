@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Trocar Senha</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="fundo" [fullscreen]="true">
+  <form [formGroup]="trocarsenhaForm" (ngSubmit)="submit()">
+      <ion-grid>
+        <ion-row  class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="8" size-lg="8" size-xs="8">
+            <ion-list>
+              <ion-item>
+                <ion-label position="stacked"><ion-icon name="key-outline"></ion-icon> Senha Nova</ion-label>
+                <ion-icon slot="end" [name]="passwordToggleIcon" (click)="togglePassord()"></ion-icon>
+                <ion-input clearOnEdit formControlName="senhanova" [type]="showPassword ? 'text' : 'password'"></ion-input>
+              </ion-item>
+              <div *ngFor="let error of errorMessages.senhanova">
+                <ng-container *ngIf="senhanova.hasError(error.type) && (senhanova.dirty || senhanova.touched)">
+                  <small class="error-message">{{error.message}}</small>
+                </ng-container>
+              </div>
+            </ion-list>
+          </ion-col>
+          <ion-col class="ion-align-self-center" size-md="8" size-lg="8" size-xs="8">
+            <ion-list>
+              <ion-item>
+                <ion-label position="stacked"><ion-icon name="key-outline"></ion-icon> Repetir Senha Nova</ion-label>
+                <ion-icon slot="end" [name]="passwordToggleIcon" (click)="togglePassord()"></ion-icon>
+                <ion-input clearOnEdit formControlName="rsenhanova" [type]="showPassword ? 'text' : 'password'"></ion-input>
+              </ion-item>
+              <div *ngFor="let error of errorMessages.rsenhanova">
+                <ng-container *ngIf="rsenhanova.hasError(error.type) && (rsenhanova.dirty || rsenhanova.touched)">
+                  <small class="error-message">{{error.message}}</small>
+                </ng-container>
+              </div>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size="12">
+            <ion-button type="submit" size="default" shape="round" [disabled]="!trocarsenhaForm.valid" expand="block">
+              Trocar Senha
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  </form>
+</ion-content>

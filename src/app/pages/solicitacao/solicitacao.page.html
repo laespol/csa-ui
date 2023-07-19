@@ -1,0 +1,180 @@
+<ion-header>
+  <ion-toolbar>
+    <img src="assets/imgs/logo.bmp" alt="Italian Trulli">
+    <ion-label color="primary" style="font-size: 25px;font-weight:bold;" slot="end">Solicitação de Ouvidoria</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" padding>
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="4" size-lg="4" size-xs="4">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="bag-outline"></ion-icon> Sigilo
+              </ion-label>
+              <ion-select (ionChange)="verificaSigilo($event)" justify="start" name="sigilo" cancelText="Cancelar"
+                formControlName="sigilo" inputmode="sigilo" placeholder="Selecione o tipo de Sigilo"
+                interface="action-sheet">
+                <ion-select-option value="0">Normal</ion-select-option>
+                <ion-select-option value="1">Sigiloso</ion-select-option>
+                <ion-select-option value="2">Anonimo</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="2" size-lg="2" size-xs="2">
+          <ion-list>
+            <span title="Informações sobre Sigilo">
+              <ion-button id="click-trigger" fill="clear" size="small">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+              </ion-button>
+            </span>
+            <ion-popover trigger="click-trigger" triggerAction="click">
+              <ng-template>
+                <ion-content class="ion-padding">
+                  <p><b><u> Abaixo os tipos de Sigilos disponiveis</u></b></p>
+                  <p><u>Normal</u> seus dados vão ser compartilhados com a area responsavel.</p>
+                  <p><u>Sigiloso</u> seus dados serão acessados somente pela Ouvidoria.</p>
+                  <p><u>Anonimo</u> seus dados não serão informados.</p>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="mail-outline"></ion-icon> Email do Solicitante
+              </ion-label>
+              <ion-input formControlName="email" inputmode="email" type="email" [required]="anonymous"></ion-input>
+            </ion-item>
+            <div *ngFor="let error of errorMessages.email">
+              <ng-container *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
+                <small class="error-message">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="body-outline"></ion-icon> Nome Solicitante
+              </ion-label>
+              <ion-input formControlName="nome" inputmode="nome" type="text" [required]="anonymous"></ion-input>
+            </ion-item>
+            <div *ngFor="let error of errorMessages.nome">
+              <ng-container *ngIf="email.hasError(error.type) && (nome.dirty || nome.touched)">
+                <small class="error-message">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="call-outline"></ion-icon> Telefone Solicitante
+              </ion-label>
+              <ion-input formControlName="telefone" inputmode="telefone" type="tel" placeholder="(99)99999-9999"
+                [required]="anonymous"></ion-input>
+            </ion-item>
+            <div *ngFor="let error of errorMessages.telefone">
+              <ng-container *ngIf="email.hasError(error.type) && (telefone.dirty || telefone.touched)">
+                <small class="error-message">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xs="6">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="bookmarks-outline"></ion-icon> Tipo de Solicitação
+              </ion-label>
+              <ion-select justify="start" name="tpsol" cancelText="Cancelar" formControlName="tpsol" inputmode="tpsol"
+                placeholder="Selecione o tipo de solicitação" interface="action-sheet">
+                <ion-select-option *ngFor="let tpsolicitacao of tpsolicitacaos" [value]="tpsolicitacao.idtpsolicitacao">
+                  {{tpsolicitacao.descricao}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="book-outline"></ion-icon> Descrição da Solcitação
+              </ion-label>
+              <ion-textarea clearOnEdit formControlName="descricao" label="Descreva sua solicitação" name="descricao"
+                type="text" helperText="Informar o motivo da Solicitação" errorText="Motivo da solicitação Invalido"
+                minlength="10" maxlength=3000 rows="6" required>
+              </ion-textarea>
+            </ion-item>
+            <div *ngFor="let error of errorMessages.descricao">
+              <ng-container *ngIf="descricao.hasError(error.type) && (descricao.dirty || descricao.touched)">
+                <small class="error-message">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">
+                <ion-icon name="file-tray-stacked-outline"></ion-icon> Arquivos Importandos
+              </ion-label>
+                <ul *ngIf="uploadedFiles.length >= 1">
+                  <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                </ul>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="8" size-lg="4" size-xs="8">
+          <ion-button type="submit" size="default" shape="round" [disabled]="!loginForm.valid" expand="block">
+            Enviar Solicitação<br>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="12" size-lg="12" size-xs="12">
+
+          <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="inputFileChange($event)"
+          (onClear)="voltar()" accept="application/pdf" chooseLabel="Escolher Arquivo" [multiple]="true"
+          uploadLabel="Carregar arquivo" cancelLabel="Cancelar">
+        </p-fileUpload>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-title>© 2020-2024 Colégio Santo Americo </ion-title>
+    <ion-label color="light" style="font-size: 1em;" slot="end">v0.00.01</ion-label>
+  </ion-toolbar>
+</ion-footer>

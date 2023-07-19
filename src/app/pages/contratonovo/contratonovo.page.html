@@ -1,0 +1,261 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/contrato"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Contrato</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form class="list" name="contrato" #fcontrato="ngForm">
+    <ion-grid>
+      <ion-list>
+        <ion-item>
+          <ion-label position="stacked">ID</ion-label>
+          <ion-input name="idcontrato" type="text" [(ngModel)]="contrato.idcontrato" readonly="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Coligada</ion-label>
+          <ion-select justify="start" name="idimovel" cancelText="Cancelar" [(ngModel)]="contrato.custo.idimovel"
+            [disabled]="!registro.contratost" placeholder="Selecione Coligada"  interface="action-sheet"
+            (ionChange)="consultaCusto(contrato.custo.idimovel)">
+            <ion-select-option *ngFor="let imovel of imovels" [value]="imovel.idimovel">{{imovel.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Localização / Area</ion-label>
+          <ion-select justify="start" name="custo" cancelText="Cancelar" [(ngModel)]="contrato.idcusto"
+            [disabled]="!registro.contratost" placeholder="Selecione area" interface="action-sheet">
+            <ion-select-option *ngFor="let custo of custos" [value]="custo.idcusto">{{custo.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Razão Social</ion-label>
+          <ion-input name="razaosocial" type="text" [(ngModel)]="contrato.razaosocial" maxlength=90 required
+            [readonly]="!registro.contratost"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">CNPJ/CPF</ion-label>
+          <ion-input name="cnpj" type="text" (ionBlur)="verificaCNPJ()" [(ngModel)]="contrato.cnpj" maxlength=18
+            [readonly]="!registro.contratost">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="cpnj_error != ''">
+          <small class="error-message">{{cpnj_error}}</small>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Descrição do Contrato</ion-label>
+          <ion-textarea name="descricao" type="text" helperText="Descrever o contrato"
+            errorText="Descrição Inváçida" [(ngModel)]="contrato.descricao" minlength="10" maxlength=600 [readonly]="!registro.contratost" required>
+          </ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Indice de Correção</ion-label>
+          <ion-select justify="start" name="correcao" interface="action-sheet" placeholder="Selecione o indice de correção"
+            [(ngModel)]="contrato.correcao" [disabled]="!registro.contratost" required>
+            <ion-select-option value="IGPM">IGPM</ion-select-option>
+            <ion-select-option value="IPCA">IPCA</ion-select-option>
+            <ion-select-option value="IPCA+">IPCA+</ion-select-option>
+            <ion-select-option value="INPC/IBGE">INPC/IBGE</ion-select-option>
+            <ion-select-option value="Sindicato">Sindicato</ion-select-option>
+            <ion-select-option value="IGP-DI">IGP-DI</ion-select-option>
+            <ion-select-option value="IPC-FIPE">IPC-FIPE</ion-select-option>
+            <ion-select-option value="Não Def">Não Def</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Classificação</ion-label>
+          <ion-input name="localizacao" type="text" [(ngModel)]="contrato.localizacao" maxlength=60 required
+            [readonly]="!registro.contratost"></ion-input>
+        </ion-item>
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Data Inicio Vigencia</ion-label>
+                <ion-input name="dtviginicio" type="text" [(ngModel)]="dtviginicio" maxlength=10
+                  [readonly]="!registro.ccontratos"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Data Fim Vigencia</ion-label>
+                <ion-input name="dtvigfinal" type="text" [(ngModel)]="dtvigfinal" maxlength=10
+                  [readonly]="!registro.ccontratos"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+
+
+              <ion-item>
+                <ion-label position="stacked">Data Assinatura Contrato</ion-label>
+                <ion-input name="dtasscont" type="text" [(ngModel)]="dtasscont" maxlength=10
+                  [readonly]="!registro.ccontratos"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Data Recebimento do Contrato</ion-label>
+                <ion-input name="dtrecdoc" type="text" [(ngModel)]="dtrecdoc" maxlength=10
+                  [readonly]="!registro.ccontratos">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Valor do Contrato</ion-label>
+                <input currencyMask name="valorproposta" [(ngModel)]="contrato.valorproposta"
+                  [options]="{ prefix: 'R$ ', thousands: '.' , decimal: ',' , precision: 2 }"
+                  [readonly]="!registro.ccontratos" />
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Tipo de Pagamento</ion-label>
+                <ion-select justify="start" name="tipopagamento" interface="action-sheet"
+                  placeholder="Selecione tipo de pagamento" [(ngModel)]="contrato.tipopagamento"
+                  [disabled]="!registro.ccontratos" required>
+                  <ion-select-option value="Mensal">Mensal</ion-select-option>
+                  <ion-select-option value="Contrato">Contrato</ion-select-option>
+                  <ion-select-option value="Anual">Anual</ion-select-option>
+                  <ion-select-option value="Parcelado">Parcelado</ion-select-option>
+                  <ion-select-option value="Não Def">Não Def</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Numero de Parcelas</ion-label>
+                <input currencyMask name="numeroparcelas" [(ngModel)]="contrato.numeroparcelas"
+                  [options]="{ prefix: '', thousands: '.' , decimal: ',' , precision: 0 }"
+                  [readonly]="!registro.ccontratos" />
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-item>
+          <ion-label position="stacked">Area Responsável</ion-label>
+          <ion-select justify="start" name="unidade" cancelText="Cancelar" [(ngModel)]="contrato.idunidade"
+            placeholder="Selecione Área Responsavel" interface="action-sheet" [disabled]="!registro.ccontratos" required>
+            <ion-select-option *ngFor="let unidade of unidades" [value]="unidade.idunidade">{{unidade.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Aditivo</ion-label>
+          <ion-toggle name="aditivo" checked="false" [(ngModel)]="contrato.aditivo" [disabled]="!registro.ccontratos">
+          </ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Renovação Automatica</ion-label>
+          <ion-toggle name="renovauto" checked="false" [(ngModel)]="contrato.renovauto"
+            [disabled]="!registro.ccontratos">
+          </ion-toggle>
+        </ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Aprovado Descarte</ion-label>
+                <ion-toggle name="aprovado" checked="false" [(ngModel)]="contrato.aprovado"
+                  [disabled]="!registro.ccontratos">
+                </ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+
+              <ion-item>
+                <ion-label position="stacked">Tempo de Guarda</ion-label>
+                <ion-input name="periodo" type="text" [(ngModel)]="contrato.periodo" maxlength=20 required
+                  [readonly]="!registro.contratost"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="contrato.iduserupdatedAt != 0">
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Data Ultima Alteração</ion-label>
+                <ion-input name="updatedAt" type="text" [(ngModel)]="updatedAt" maxlength=10 readonly>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Usuario Responsavel pela Alteração</ion-label>
+                <ion-input name="iduserupdatedAt" type="text" [(ngModel)]="iduserupdatedAt" maxlength=90 readonly>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-item>
+          <ion-label position="stacked">Documento PDF</ion-label>
+          <p> </p>
+          <div *ngIf="registro.ccontratos">
+
+            <p-fileUpload mode="basic" name="demo[]" [customUpload]="true" accept="application/pdf"
+              (uploadHandler)="inputFileChange($event)" [auto]="true" chooseLabel="Carregar o contrato">
+            </p-fileUpload>
+
+          </div>
+        </ion-item>
+      </ion-list>
+      <div *ngIf="registro.contratost">
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+            <ion-button type="submit" size="default" shape="round" (click)="gravar()" expand="block">
+              <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+              Gravar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+            <ion-button type="submit" size="default" shape="round" (click)="voltar()" expand="block">
+              <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+              Cancelar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+    <div *ngIf="pdfSrc != ''">
+      <ion-button type="submit" size="small" shape="round" (click)="subtractZoom()">
+        <ion-icon name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-button type="submit" size="small" shape="round" (click)="addZoom()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+      <ion-button type="submit" size="small" shape="round" (click)="rotateDoc()">
+        <ion-icon name="sync-outline"></ion-icon>
+      </ion-button>
+
+      <pdf-viewer [src]="pdfSrc" [render-text]="true" [autoresize]="true" [original-size]="false" [fit-to-page]="false"
+        [rotation]="rotation" style="width: 1200px ; height: 1500px" [zoom]="zoom"></pdf-viewer>
+    </div>
+  </form>

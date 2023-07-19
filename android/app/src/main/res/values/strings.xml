@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">csa-uin</string>
+    <string name="title_activity_main">csa-uin</string>
+    <string name="package_name">gad.santoamerico.org.br</string>
+    <string name="custom_url_scheme">gad.santoamerico.org.br</string>
+</resources>

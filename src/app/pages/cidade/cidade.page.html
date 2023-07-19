@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"> </ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <div *ngIf="mobile">
+
+        <ion-button (click)="rotaciona()">
+          <ion-icon name="refresh"></ion-icon>
+        </ion-button>
+
+      </div>
+    </ion-buttons>
+    <ion-title>Horas Solicitadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-button type="submit" size="default" shape="round" expand="block" (click)="novo()"
+    [hidden]="!registro.choraextra">
+    <ion-icon name="person-add-outline" color="#f3f3bc"></ion-icon>Nova Solicitação de Horas
+  </ion-button>
+  <div class="card">
+    <p-table #dt1 [value]="horas" [lazy]="true" (onLazyLoad)="LoadItcompra($event)" responsiveLayout="scroll"
+      [columns]="selectedColumns" dataKey="idhora" [paginator]="true" [rows]="5" [(selection)]="selectedHoras"
+      styleClass="p-datatable-sm" scrollDirection="both" selectionMode="multiple" [showCurrentPageReport]="true"
+      [reorderableColumns]="true" 
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [scrollable]="true"
+      [rowsPerPageOptions]="[5,10,20,50]" [totalRecords]="totalRecords" [loading]="loading">
+      <ng-template pTemplate="caption">
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Colunas Relatorio</ion-label>
+            <ion-select name="columns" cancelText="Cancelar" [(ngModel)]="selectedColumns"
+              placeholder="Selecione as colunas" multiple="true">
+              <ion-select-option *ngFor="let col of cols" [value]="col">{{col.header}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-button slot="start" type="submit" size="smal" shape="round" (click)="exportExcel(posicao)" pTooltip="XLS"
+              tooltipPosition="bottom">
+              <ion-icon name="document-text-sharp" color="#f3f3bc"></ion-icon>
+              Excel
+            </ion-button>
+            <ion-input #buscaDescricao name="container" type="text"
+              (input)="dt1.filterGlobal(buscaDescricao.value, 'contains')" placeholder="Pesquisar" [(ngModel)]="dt22">
+            </ion-input>
+            <ion-button slot="end" type="submit" size="smal" shape="round" (click)="clear(dt1)" pTooltip="XLS"
+              tooltipPosition="bottom">
+              <ion-icon name="refresh-outline" color="#f3f3bc"></ion-icon>
+              Limpar
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width:60px" pFrozenColumn >Opções</th>
+          <th *ngFor="let col of columns" pReorderableColumn [pSortableColumn]="col.field" [style]='col.style'>
+            {{col.header}}
+            <span *ngIf="col.ordena === 'true'">
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </span>
+            <div *ngIf="col.filtra === true " class="flex justify-content-center align-items-center">
+              <p-columnFilter field="usuario" matchMode="equals" display="menu" [showMatchModes]="false"
+                [showOperator]="false" [showAddButton]="false" class="ml-auto">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-dropdown [ngModel]="value" [options]="usuarios" (onChange)="filter($event.value)"
+                    [showClear]="true" placeholder="Todos" optionLabel="nome">
+                    <ng-template let-option pTemplate="item">
+                      <span>{{option.nome}}</span>
+                    </ng-template>
+                  </p-dropdown>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex" let-expanded="expanded">
+        <tr [pReorderableRow]="index">
+          <td style="width:30px" pFrozenColumn>
+            <p-tableCheckbox [value]="rowData">
+              <span title="Selecionar solicitação de hora extra">
+              </span>
+            </p-tableCheckbox>
+          </td>
+          <td style="width:30px" pFrozenColumn>
+          <button pButton pRipple (click)="apagar(rowData)">
+            <span title="Excluir Solicitação de hora extra">
+              <ion-icon name="trash-outline"></ion-icon>
+            </span>
+          </button>
+        </td>
+          <td *ngFor="let col of columns" [style]='col.style'>
+            <span *ngIf="col.type === 'agregate1'">
+              {{rowData[col.field]?.[col.agregado1]}}
+            </span>
+            <span *ngIf="col.type === 'soma' ">
+              {{ rowData[col.agregado2] | currency: 'BRL' :true:'1.2-2'}}
+            </span>
+            <span *ngIf="col.type === 'agregate2'">
+              {{rowData[col.field]?.[col.agregado1]?.[col.agregado2]}}
+            </span>
+            <span *ngIf="col.type === 'string'">
+              {{rowData[col.field]}}
+            </span>
+            <span *ngIf="col.type === 'date'">
+              {{rowData[col.field] | date: 'dd/MM/YYYY HH:mm '}}
+            </span>
+            <span *ngIf="col.type === 'date1'">
+              {{rowData[col.field] | date: 'dd/MM/YYYY' }}
+            </span>
+            <span *ngIf="col.type === 'status'">
+              {{rowData[col.field] ? "Sim" : "Não" }}
+            </span>
+            <span *ngIf="col.type === 'stcontrato'">
+              {{rowData[col.field]=="A" ? "Ativo" : "Finalizado" }}
+            </span>
+            <span *ngIf="col.type === 'agregate3'">
+              {{rowData[col.field][0]?.[col.agregado1]}}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-rowData>
+        <tr>
+          <td colspan="7">
+            <div class="p-3">
+              <p-table [value]="rowData.Histcompra" dataKey="id" styleClass="p-datatable-sm" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 180px;"></th>
+          <th style="width:80px" pFrozenColumn pSortableColumn="idhistcompra">ID<p-sortIcon field="idhistcompra">
+            </p-sortIcon>
+          </th>
+          <th style="width:300px" pSortableColumn="nome">Comentario<p-sortIcon field="nome"></p-sortIcon>
+          </th>
+          <th style="width:200px" pSortableColumn="centrocusto">Usuario<p-sortIcon field="centrocusto"></p-sortIcon>
+          </th>
+          <th style="width:200px" pSortableColumn="centrocusto">Data<p-sortIcon field="centrocusto"></p-sortIcon>
+          </th>
+          <th style="width:200px" pSortableColumn="statuscompra">Posição<p-sortIcon field="statuscompra"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+
+
+    </p-table>
+  </div>
+  </td>
+  </tr>
+  </ng-template>
+  </p-table>
+  </div>
+  <div>
+    <ion-button type="submit" size="default" shape="round" expand="block" (click)="finalizar()">
+      <ion-icon name="print-outline" color="#f3f3bc"></ion-icon> Imprimir Solicitação de Hora Extra
+    </ion-button>
+    <ion-button color="primary" (click)="save()">Save</ion-button>
+    <ion-button color="primary" (click)="setColumnsDefaultValue()">Reset</ion-button>
+
+  </div>
+</ion-content>

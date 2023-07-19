@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Relatorio de Contrato</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Colunas Relatorio</ion-label>
+      <ion-select name="columns" cancelText="Cancelar" [(ngModel)]="selectedColumns"
+        placeholder="Selecione as colunas" multiple="true">
+        <ion-select-option *ngFor="let col of cols" [value]="col">{{col.header}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Coligada</ion-label>
+      <ion-select name="columns" cancelText="Cancelar" [(ngModel)]="selectedImovels"
+        placeholder="Selecione as coligadas" multiple="true">
+        <ion-select-option *ngFor="let imovel of imovels" [value]="imovel">{{imovel.nome}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Area Responsavel</ion-label>
+      <ion-select name="columns" cancelText="Cancelar" [(ngModel)]="selectedUnidade"
+        placeholder="Selecione as unidade" multiple="true">
+        <ion-select-option *ngFor="let unidade of unidades" [value]="unidade">{{unidade.nome}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <div>
+    <ion-button type="submit" size="default" shape="round" expand="block" (click)="exportExcel()">
+      <ion-icon name="print-outline" color="#f3f3bc"></ion-icon> Imprimir Realatorio em Excel
+    </ion-button>
+
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/cidade"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Solicitação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form class="list" name="cidade" #fcidade="ngForm">
+    <ion-grid>
+      <ion-list>
+        <ion-item>
+          <ion-label> Id : </ion-label>
+          <ion-input name="idcidade" type="number" [(ngModel)]="hora.idhora" readonly></ion-input>
+          <div *ngIf="hora.idhora != 0">
+            <ion-button type="submit" size="default" shape="round" (click)="apagar()">
+              <ion-icon name="trash-outline" color="#f3f3bc"></ion-icon>
+              Apagar
+            </ion-button>
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Tipo de Requisição</ion-label>
+          <ion-select justify="start" name="tphora" cancelText="Cancelar" [(ngModel)]="hora.idtphora"
+            placeholder="Selecione Tipo de Requisição" interface="action-sheet" required>
+            <ion-select-option *ngFor="let tphora of tphoras" [value]="tphora.idtphora">{{tphora.nome}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Cracha</ion-label>
+          <ion-input name="chapa" type="text" (ionBlur)="pesquisaChapa()" [(ngModel)]="funcionario.chapa" minlength=5
+            maxlength=7 required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Funcionario</ion-label>
+          <ion-input (ionChange)="pesquisaNome()" name="nome" type="text" [(ngModel)]="funcionario.nome" [maxlength]=70
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="completa">
+          <ion-list style="width: 100%; max-height: 200px; overflow-y: scroll;">
+            <ion-item *ngFor="let funcionario of funcionarios" (click)="selecionaFuncionario(funcionario.chapa)" button>
+              <ion-label>{{funcionario.chapa}} - {{funcionario.nome}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Departamento</ion-label>
+          <ion-input name="departamento" type="text" [(ngModel)]="funcionario.departamento" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Centro de Custo</ion-label>
+          <ion-input name="centrocusto" type="text" [(ngModel)]="funcionario.centrocusto" readonly></ion-input>
+        </ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Data Inicio</ion-label>
+                <ion-input name="datainicio" type="date" [(ngModel)]="datainicio" maxlength=10 placeholder="dd/mm/aaaa">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Data Final</ion-label>
+                <ion-input name="datafinal" type="date" [(ngModel)]="datafinal" maxlength=10 placeholder="dd/mm/aaaa">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Numero de Horas Solicitadas</ion-label>
+                <input currencyMask name="qthoras" [(ngModel)]="hora.qthoras"
+                  [options]="{ prefix: '', thousands: '.' , decimal: ',' , precision: 0 }" required />
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="hora.idtphora === 2">
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Dia Compensado</ion-label>
+                <ion-input name="dtcompini" type="date" [(ngModel)]="dtcompini" maxlength=10 placeholder="dd/mm/aaaa">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Numero de horas Realizadas</ion-label>
+                <input currencyMask name="qthoras" [(ngModel)]="hora.hrcomp"
+                  [options]="{ prefix: '', thousands: '.' , decimal: ',' , precision: 0 }" required />
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-item>
+          <ion-label position="stacked">Motivo Solicitação</ion-label>
+          <ion-textarea name="motivo" type="text" helperText="Informar o motivo da Solicitação"
+            errorText="Motivo da solicitação Invalido" [(ngModel)]="hora.motivo" minlength="10" maxlength=600 required>
+          </ion-textarea>
+        </ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Solicitante</ion-label>
+                <ion-input name="usuario" type="text" [(ngModel)]="hora.usuario.nome" maxlength=600 readonly>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Departamento</ion-label>
+                <ion-select justify="start" name="unidade" cancelText="Cancelar" [(ngModel)]="hora.unidade.idunidade"
+                  placeholder="Selecione Área Responsavel" interface="action-sheet" required>
+                  <ion-select-option *ngFor="let unidade of unidades" [value]="unidade.idunidade">{{unidade.nome}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+
+
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-button type="submit" size="default" shape="round" (click)="gravar()" expand="block"
+            [disabled]="fcidade.invalid || this.hora.idhora != 0">
+            <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+            Gravar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-button type="cancel" size="default" shape="round" (click)="voltar()" expand="block">
+            <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+            Cancelar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

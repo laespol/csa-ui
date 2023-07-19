@@ -1,0 +1,70 @@
+<ion-content>
+  <form  class="list" name="cidade"  #fcidade="ngForm">
+    <ion-grid>
+      <ion-list>
+        <ion-item>
+          <ion-label> Id : </ion-label>
+          <ion-input  name="idcidade" type="number" [(ngModel)]="hora.idhora" readonly></ion-input>
+          <div *ngIf="hora.idhora != 0">
+            <ion-button type="submit" size="default" shape="round" (click)="apagar()">
+              <ion-icon name="trash-outline" color="#f3f3bc"></ion-icon>
+              Apagar
+            </ion-button>
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Cracha</ion-label>
+          <ion-input autocapitalize name="chapa" type="text" [(ngModel)]="hora.chapa" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Funcionario</ion-label>
+          <ion-input autocapitalize name="funcionario" type="text" [(ngModel)]="hora.funcionario" required></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label position="stacked">Data Inicio</ion-label>
+          <ion-input name="datainicio" type="text" [(ngModel)]="datainicio" maxlength=10 placeholder="dd/mm/aaaa"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Data Final</ion-label>
+          <ion-input name="datafinal" type="text" [(ngModel)]="datafinal" maxlength=10 placeholder="dd/mm/aaaa"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Motivo Solicitação</ion-label>
+          <ion-textarea name="motivo" type="text" [(ngModel)]="hora.motivo" maxlength=600 required></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Numero de Horas Solicitadas</ion-label>
+          <input currencyMask name="qthoras" [(ngModel)]="hora.qthoras"
+            [options]="{ prefix: '', thousands: '.' , decimal: ',' , precision: 0 }"
+              required />
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Solicitante</ion-label>
+          <ion-input name="usuario" type="text" [(ngModel)]="hora.usuario.nome" maxlength=600 readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Departamento</ion-label>
+          <ion-input name="unidade" type="text" [(ngModel)]="hora.usuario.unidade.nome" maxlength=600 readonly ></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12"  >
+          <ion-button type="submit" size="default" shape="round"  (click)="gravar()" expand="block" [disabled]="fcidade.invalid || this.hora.idhora != 0">
+            <ion-icon name="save-outline" color="#f3f3bc" ></ion-icon>
+            Gravar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-button type="cancel" size="default" shape="round" (click)="voltar()" expand="block">
+            <ion-icon name="return-down-back-outline" color="#f3f3bc"></ion-icon>
+            Cancelar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

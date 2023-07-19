@@ -1,0 +1,7 @@
+{
+  "name": "sca-uin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

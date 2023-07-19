@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Grafico Consumo de horas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form class="list" name="cidade" #fcidade="ngForm">
+  <ion-item>
+    <ion-label position="stacked">Ano</ion-label>
+    <ion-input name="datainicio" type="string" [(ngModel)]="ano" maxlength=4 placeholder="aaaa" required>
+    </ion-input>
+  </ion-item>
+  </form>
+  <ion-row class="ion-justify-content-center">
+    <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+      <ion-button type="submit" size="default" shape="round" (click)="gerar()" expand="block"
+        [disabled]="fcidade.invalid">
+        <ion-icon name="save-outline" color="#f3f3bc"></ion-icon>
+        Gerar
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <div class="ion-padding" >
+    <ion-card>
+      <ion-card-header>
+        Grafico de consumo de horas/mês
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #barCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
